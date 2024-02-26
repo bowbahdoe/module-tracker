@@ -2,7 +2,6 @@ import org.sqlite.SQLiteDataSource;
 
 public class DB1 {
     public static void main(String[] args) throws Exception {
-
         var db = new SQLiteDataSource();
         db.setUrl("jdbc:sqlite:modules.db");
 

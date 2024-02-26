@@ -99,7 +99,7 @@ class IndexHandler extends RouteHandler {
     @Override
     protected HtmlResponse handleRoute(Matcher matcher, Request request) throws Exception {
 
-        record Row(String name, String category, boolean reviewed, boolean stupidName) {
+        record Row(String name, String category) {
         }
 
         class Rows extends ArrayList<Row> implements HtmlEncodable {
@@ -133,7 +133,7 @@ class IndexHandler extends RouteHandler {
         var rows = new Rows();
         try (var conn = db.getConnection();
              var stmt = StatementPreparer.of(conn)."""
-                     SELECT name, category, reviewed, stupid_name FROM module
+                     SELECT name, category FROM module
                      WHERE category = \{category}
                      ORDER BY name asc
                      """) {
@@ -141,9 +141,7 @@ class IndexHandler extends RouteHandler {
             while (rs.next()) {
                 rows.add(new Row(
                         rs.getString("name"),
-                        rs.getString("category"),
-                        ResultSets.getBooleanNotNull(rs, "reviewed"),
-                        ResultSets.getBooleanNotNull(rs, "stupid_name")
+                        rs.getString("category")
                 ));
             }
         }
